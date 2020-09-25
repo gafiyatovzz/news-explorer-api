@@ -1,0 +1,20 @@
+{
+  "name": "new-explorer",
+  "version": "1.0.0",
+  "description": "created by Zakir Gafiyatov",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gafiyatovzz/news-explorer-api.git"
+  },
+  "author": "Zakir Gafiyatov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gafiyatovzz/news-explorer-api/issues"
+  },
+  "homepage": "https://github.com/gafiyatovzz/news-explorer-api#readme"
+}
