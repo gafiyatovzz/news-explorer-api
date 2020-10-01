@@ -30,20 +30,21 @@ const userSchema = new mongoose.Schema({
 });
 
 // TODO: findUserByCredentials - вернуться к конспектам и ознакомиться с этим методом.
-userSchema.findUserByCredentials = function(email, password) {
-  return finOne({ email }).select('+password')
+userSchema.statics.findUserByCredentials = function(email, password) {
+  return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error('Неправильные почта или пароль.'))
       }
-      return bcrypt.compare(password, user.password) //TODO: что это значит
+      return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
             return Promise.reject(new Error('Неправильные почта или пароль.'))
           }
+          console.log('user', user);
           return user;
-        })
-    })
+        });
+    });
 }
 
 module.exports = mongoose.model('user', userSchema);

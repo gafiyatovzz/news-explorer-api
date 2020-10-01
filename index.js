@@ -1,8 +1,8 @@
 const express = require('express');
-const coockieParser = require('coockieParser');
-require('.dotenv').config();
-
-const { PORT = 3000 } = process.env;
+const coockieParser = require('./node_modules/cookie-parser');
+require('dotenv').config();
+console.log(process.env.NODE_ENV);
+const { PORT = 5000 } = process.env;
 
 const app = express();
 
@@ -20,7 +20,7 @@ const articleRoutes = require('./routes/articles');
 
 // *************** MONGO_DB ****************** //
 
-const URI = 'mongodb://localhost:27017/news-exlprer-db';
+const URI = 'mongodb://localhost:27017/news-explorer-db';
 const options = {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -51,13 +51,14 @@ app.use(errorLogger);
 
 app.use(errors());
 
+
+// *************** ERRORS ****************** //
+
 app.use((err, req, res) => {
   if(!err.statusCode) {
     const { statusCode = 500, message } = err;
 
-    res
-      .status(statusCode)
-      .send({
+    res.status(statusCode).send({
         message: statusCode === 500
           ? 'На сервере произошла ошибка'
           : message,
@@ -66,6 +67,8 @@ app.use((err, req, res) => {
   res.status(err.statusCode).send({ message: err.message });
 });
 
+// *************** APP ****************** //
+
 app.listen(PORT, () => {
-  console.log('Server launch on port', PORT);
+  console.log('Local server launch on port', PORT);
 });
