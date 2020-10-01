@@ -5,18 +5,19 @@ module.exports.getAllArticles = (req, res, next) => {
   Article.find({})
     .then((article) => {
       if (!article) {
-        throw new NotFoundError('Неверный параметр запроса. Ошибка 404.')
+        throw new NotFoundError('Неверный параметр запроса. Ошибка 404.');
       }
-      res.send({ data: article })
+      res.send({ data: article });
     })
-    .catch(next)
+    .catch(next);
 };
 
 module.exports.createArtiqle = (req, res, next) => {
-  const { keyword, title, text, date, source, link, image } = req.body
-
+  const {
+    keyword, title, text, date, source, link, image,
+  } = req.body;
   Article.create({
-    keyword, title, text, date, source, link, image: req.user._id,
+    keyword, title, text, date, source, link, image, owner: req.user._id,
   })
     .then((article) => {
       if (!article) {
@@ -24,21 +25,20 @@ module.exports.createArtiqle = (req, res, next) => {
       }
       res.send({ data: article });
     })
-    .catch(next)
-}
+    .catch(next);
+};
 
 module.exports.removeArtiqle = (req, res, next) => {
   Article.findById(req.params.id)
-    .then((artcle) => {
-      if (article.owner.toString() === req.user._id) {
-        Article.findByIdAndRemove(artcle._id, () => {
-          res.send({ message: 'Новость удалена'});
+    .then((art) => {
+      if (art === null) {
+        res.status(404).send({ message: 'Такой карточки не существует' });
+      } else if (art.owner.toString() === req.user._id) {
+        Article.findByIdAndRemove(art._id, () => {
+          res.send({ message: 'Новость удалена' });
         });
-      } else if (artcle === null) {
-        throw NotFoundError('Такой новости не существует')
-      } else {
-        res.status(401).send({ message: 'Отказ в доступе. Запрещено удалять чужие новости.' })
       }
+      return res.status(401).send({ message: 'Отказ в доступе. Запрещено удалять чужие новости.' });
     })
     .catch(next);
-}
+};

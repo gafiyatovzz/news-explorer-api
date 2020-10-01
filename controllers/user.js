@@ -6,7 +6,7 @@ const NotFoundError = require('../utils/NotFoundError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.getUser = (req, res, next) => {
-  User.findById(req.params.id)
+  User.findOne(req.params.id)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
@@ -16,7 +16,7 @@ module.exports.getUser = (req, res, next) => {
           name: user.name,
           email: user.email,
         },
-      })
+      });
     })
     .catch(next);
 };
@@ -26,28 +26,26 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      if(!user) {
+      if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
       }
       const token = jwt.sign(
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
       );
-      console.log('env ', process.env);
-      console.log('TOKEN: ', token);
       res
         .cookie('jwt', token, {
           maxAge: 360000,
           httpOnly: true,
-          sameSite: true
         })
-        .end()
+        .end();
     })
     .catch(next);
 };
 
 module.exports.createUser = (req, res, next) => {
-  User.findOne({ email: req.body.email })
+  User.findOne({ email: req.body.email });
 
   bcrypt.hash(req.body.password, 10)
     .then((hash) => {
@@ -62,8 +60,8 @@ module.exports.createUser = (req, res, next) => {
               _id: user._id,
               name: user.name,
               email: user.email,
-            }
-          })
+            },
+          });
         })
         .catch(next);
     });
