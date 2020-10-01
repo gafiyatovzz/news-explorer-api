@@ -14,5 +14,6 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-useless-escape': 'off',
     'func-names': 'off',
+    'no-console': 'off',
   },
 };
