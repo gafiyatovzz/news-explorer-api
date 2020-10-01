@@ -5,10 +5,34 @@ const controller = require('../controllers/article');
 
 const { Joi, celebrate } = require('../node_modules/celebrate');
 
-router.get('/', controller.getAllArticles);
+const regx = /http[s]?:\/\/(www\.)?((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(\w+\.[a-zA-Z]{2,6}))(:\d{2,5})?(\/[a-zA-Z0-9\/]*)?#?/i;
 
-router.post('/', controller.createArtiqle);
+router.get('/', celebrate({
+  body: Joi.object().keys({
+    keyword: Joi.string().required().alphanum(),
+    title: Joi.string().required().alphanum(),
+    text: Joi.string().required().alphanum(),
+    date: Joi.date().default(Date.now).required(),
+    source: Joi.string().required().regex(regx),
+    link: Joi.string().required().regex(regx),
+    image: Joi.string().required().regex(regx),
+    owner: Joi.string().required(),
+  }),
+}), controller.getAllArticles);
 
-router.delete('/articleId', controller.removeArtiqle);
+router.post('/', celebrate({
+  body: Joi.object().keys({
+    keyword: Joi.string().required().alphanum(),
+    title: Joi.string().required().alphanum(),
+    text: Joi.string().required().alphanum(),
+    date: Joi.date().default(Date.now).required(),
+    source: Joi.string().required().regex(regx),
+    link: Joi.string().required().regex(regx),
+    image: Joi.string().required().regex(regx),
+    owner: Joi.string().required(),
+  }),
+}), controller.createArtiqle);
+
+router.delete('/:id', controller.removeArtiqle);
 
 module.exports = router;
