@@ -5,7 +5,7 @@ const regUrl = /http[s]?:\/\/(www\.)?((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|(\w+\
 const articleSchema = new mongoose.Schema({
   keyword: {
     type: String,
-    required: true
+    required: true,
   },
   title: {
     type: String,
@@ -25,31 +25,31 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => regUrl.test(v),
-      message: 'Ссылка некорректна'
-    }
+      message: 'Ссылка некорректна',
+    },
   },
   link: {
     type: String,
     required: true,
     validate: {
       validator: (v) => regUrl.test(v),
-      message: 'Ссылка некорректна'
-    }
+      message: 'Ссылка некорректна',
+    },
   },
   image: {
     type: String,
     required: true,
     validate: {
       validator: (v) => regUrl.test(v),
-      message: 'Ссылка некорректна'
-    }
+      message: 'Ссылка некорректна',
+    },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'user',
     select: false,
-  }
+  },
 });
 
 module.exports = mongoose.model('article', articleSchema);
