@@ -9,12 +9,13 @@ module.exports.getUser = (req, res, next) => {
   User.findOne(req.params.id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id');
+        throw new NotFoundError('Неверный параметр запроса.');
       }
       res.send({
         data: {
           name: user.name,
           email: user.email,
+          id: req.user._id,
         },
       });
     })
@@ -45,7 +46,13 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  User.findOne({ email: req.body.email });
+  User.findOne({ email: req.body.email },
+    (err, doc) => {
+      if (err) {
+        throw new NotFoundError('Что-то пошло не так');
+      }
+      return doc;
+    });
 
   bcrypt.hash(req.body.password, 10)
     .then((hash) => {
@@ -53,6 +60,14 @@ module.exports.createUser = (req, res, next) => {
         name: req.body.name,
         email: req.body.email,
         password: hash,
+      }, (err, doc) => {
+        if (err) {
+          throw new Error({
+            message:
+              'При создании пользователья что-то пошло не так.',
+          });
+        }
+        return doc;
       })
         .then((user) => {
           res.status(201).send({
@@ -68,12 +83,13 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.getAll = (req, res, next) => {
-  User.find({})
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('Неверный параметр запроса. Ошибка 404.');
+  User.find({},
+    (err, doc) => {
+      if (err) {
+        throw new NotFoundError('Что-то пошло не так. Неверный параметр запроса.');
       }
-      res.send({ data: user });
+      return doc;
     })
+    .then((user) => res.send({ data: user }))
     .catch(next);
 };

@@ -16,13 +16,12 @@ module.exports.createArtiqle = (req, res, next) => {
   const {
     keyword, title, text, date, source, link, image,
   } = req.body;
+
   Article.create({
     keyword, title, text, date, source, link, image, owner: req.user._id,
   })
     .then((article) => {
-      if (!article) {
-        throw new NotFoundError('Неверный параметр запроса.');
-      }
+      console.log('arti === ', article);
       res.send({ data: article });
     })
     .catch(next);
@@ -32,13 +31,17 @@ module.exports.removeArtiqle = (req, res, next) => {
   Article.findById(req.params.id)
     .then((art) => {
       if (art === null) {
-        res.status(404).send({ message: 'Такой карточки не существует' });
+        res.send({ message: 'Новость не найдена' });
       } else if (art.owner.toString() === req.user._id) {
-        Article.findByIdAndRemove(art._id, () => {
-          res.send({ message: 'Новость удалена' });
-        });
+        Article.findByIdAndRemove(art._id);
+        res.status(200).json({ message: 'Новость удалена' });
       }
-      return res.status(401).send({ message: 'Отказ в доступе. Запрещено удалять чужие новости.' });
+      res
+        .status(401)
+        .send({
+          message:
+            'Отказ в доступе. Запрещено удалять чужие новости.',
+        });
     })
     .catch(next);
 };
