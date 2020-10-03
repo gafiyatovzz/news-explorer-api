@@ -1,9 +1,9 @@
 const express = require('express');
 
 const router = express.Router();
+const { Joi, celebrate } = require('celebrate');
 
-const controller = require('../controllers/user');
-const { Joi, celebrate } = require('../node_modules/celebrate');
+const controller = require('../../controllers/user');
 
 router.get('/me', celebrate({
   body: Joi.object().keys({
