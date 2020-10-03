@@ -15,10 +15,7 @@ const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const userController = require('./controllers/user');
-const userRoutes = require('./routes/user');
-const articleRoutes = require('./routes/articles');
-
-require('./middlewares/logger');
+const indexRoute = require('./routes/index');
 
 // *************** MONGO_DB ****************** //
 
@@ -47,8 +44,7 @@ app.post('/signup', userController.createUser);
 
 app.use(auth);
 
-app.use('/user', userRoutes);
-app.use('/articles', articleRoutes);
+app.use(indexRoute);
 
 app.use(errorLogger);
 
@@ -56,17 +52,19 @@ app.use(errors());
 
 // *************** ERRORS ****************** //
 
-app.use((err, req, res) => {
-  if (!err.statusCode) {
-    const { statusCode = 500, message } = err;
+app.use((err, req, res, next) => {
+  if (!err.statuseCode) {
+    const { statuseCode = 500, message } = err;
 
-    res.status(statusCode).send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
+    res.status(statuseCode)
+      .send({
+        message: statuseCode === 500
+          ? 'На сервере произошла ошибка'
+          : message,
+      });
+  } else {
+    res.status(err.statuseCode).send({ message: err.message });
   }
-  res.status(err.statusCode).send({ message: err.message });
 });
 
 // *************** APP ****************** //

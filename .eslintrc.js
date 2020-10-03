@@ -15,5 +15,6 @@ module.exports = {
     'no-useless-escape': 'off',
     'func-names': 'off',
     'no-console': 'off',
+    'no-unused-vars': 'off',
   },
 };
