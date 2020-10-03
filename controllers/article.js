@@ -1,6 +1,5 @@
 const Article = require('../models/Article');
-const { ForbiddenError, BadRequestError } = require('../utils/index');
-const NotFoundError = require('../utils/index');
+const { NotFoundError, ForbiddenError, BadRequestError } = require('../utils/errors/index');
 
 module.exports.getAllArticles = (req, res, next) => {
   Article.find({})
