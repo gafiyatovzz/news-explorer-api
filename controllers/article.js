@@ -4,9 +4,7 @@ const NotFoundError = require('../utils/NotFoundError');
 module.exports.getAllArticles = (req, res, next) => {
   Article.find({})
     .then((article) => {
-      if (!article) {
-        throw new NotFoundError('Неверный параметр запроса. Ошибка 404.');
-      }
+      if (!article) throw new NotFoundError('Ошибка запроса');
       res.send({ data: article });
     })
     .catch(next);
@@ -21,7 +19,7 @@ module.exports.createArtiqle = (req, res, next) => {
     keyword, title, text, date, source, link, image, owner: req.user._id,
   })
     .then((article) => {
-      console.log('arti === ', article);
+      // if (!article) throw new NotFoundError('Ошибка запроса');
       res.send({ data: article });
     })
     .catch(next);
@@ -30,18 +28,18 @@ module.exports.createArtiqle = (req, res, next) => {
 module.exports.removeArtiqle = (req, res, next) => {
   Article.findById(req.params.id)
     .then((art) => {
+      console.log(art);
       if (art === null) {
-        res.send({ message: 'Новость не найдена' });
+        throw new NotFoundError('Такой новости не существует');
       } else if (art.owner.toString() === req.user._id) {
-        Article.findByIdAndRemove(art._id);
-        res.status(200).json({ message: 'Новость удалена' });
+        Article.findByIdAndRemove(art._id)
+          .then(() => {
+            res.send({ message: 'Новость удалена!' });
+          })
+          .catch(next);
+      } else {
+        res.status(401).send({ message: 'Запрещено удалять чужие новости' });
       }
-      res
-        .status(401)
-        .send({
-          message:
-            'Отказ в доступе. Запрещено удалять чужие новости.',
-        });
     })
     .catch(next);
 };
