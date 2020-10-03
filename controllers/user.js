@@ -1,7 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const NotFoundError = require('../utils/NotFoundError');
+const { NotFoundError, ForbiddenError } = require('../utils');
+const BadRequestError = require('../utils/BadRequestError/BadRequestError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -9,7 +10,7 @@ module.exports.getUser = (req, res, next) => {
   User.findOne(req.params.id)
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Неверный параметр запроса.');
+        throw new BadRequestError('Некорректный запрос.');
       }
       res.send({
         data: {
@@ -46,13 +47,13 @@ module.exports.login = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
-  User.findOne({ email: req.body.email },
-    (err, doc) => {
-      if (err) {
-        throw new NotFoundError('Что-то пошло не так');
+  User.findOne({ email: req.body.email })
+    .then((user) => {
+      if (user) {
+        throw new BadRequestError('Пользователь существует');
       }
-      return doc;
-    });
+    })
+    .catch(next);
 
   bcrypt.hash(req.body.password, 10)
     .then((hash) => {
@@ -60,36 +61,20 @@ module.exports.createUser = (req, res, next) => {
         name: req.body.name,
         email: req.body.email,
         password: hash,
-      }, (err, doc) => {
-        if (err) {
-          throw new Error({
-            message:
-              'При создании пользователья что-то пошло не так.',
-          });
-        }
-        return doc;
       })
-        .then((user) => {
+        .then((us) => {
+          if (!us) {
+            throw new BadRequestError('При создании пользователья что-то пошло не так.');
+          }
           res.status(201).send({
             data: {
-              _id: user._id,
-              name: user.name,
-              email: user.email,
+              _id: us._id,
+              name: us.name,
+              email: us.email,
             },
           });
         })
         .catch(next);
-    });
-};
-
-module.exports.getAll = (req, res, next) => {
-  User.find({},
-    (err, doc) => {
-      if (err) {
-        throw new NotFoundError('Что-то пошло не так. Неверный параметр запроса.');
-      }
-      return doc;
     })
-    .then((user) => res.send({ data: user }))
     .catch(next);
 };
