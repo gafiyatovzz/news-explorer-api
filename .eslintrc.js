@@ -13,8 +13,5 @@ module.exports = {
   rules: {
     'no-underscore-dangle': 'off',
     'no-useless-escape': 'off',
-    'func-names': 'off',
-    'no-console': 'off',
-    'no-unused-vars': 'off',
   },
 };

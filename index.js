@@ -43,7 +43,7 @@ app.post('/signup', userController.createUser);
 
 app.use(auth);
 
-app.use(indexRoute);
+app.use('/api', indexRoute);
 
 app.use(errorLogger);
 
@@ -63,7 +63,7 @@ app.use((err, req, res, next) => {
       });
   } else {
     res.status(err.statuseCode).send({ message: err.message });
-  }
+  } next();
 });
 
 // *************** APP ****************** //
