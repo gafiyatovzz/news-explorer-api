@@ -27,7 +27,6 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      console.log(user);
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
       }
