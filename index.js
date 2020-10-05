@@ -2,7 +2,7 @@ const express = require('express');
 const coockieParser = require('cookie-parser');
 require('dotenv').config();
 
-const { PORT = 5000 } = process.env;
+const { PORT, URI } = process.env;
 
 const app = express();
 
@@ -19,7 +19,6 @@ const indexRoute = require('./routes/index');
 
 // *************** MONGO_DB ****************** //
 
-const URI = 'mongodb://localhost:27017/news-explorer-db';
 const options = {
   useNewUrlParser: true,
   useCreateIndex: true,

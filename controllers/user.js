@@ -6,7 +6,7 @@ const { NotFoundError, BadRequestError } = require('../utils/errors');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.getUser = (req, res, next) => {
-  User.findOne(req.params.id)
+  User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw new BadRequestError('Некорректный запрос.');
@@ -27,6 +27,7 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      console.log(user);
       if (!user) {
         throw new NotFoundError('Нет пользователя с таким id');
       }
