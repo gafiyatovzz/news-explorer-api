@@ -11,12 +11,16 @@ const { errors } = require('celebrate');
 
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const keys = require('./config/keys');
+// const keys = require('./config/keys');
+
+const { PORT = 3000 } = process.env;
+
 const userController = require('./controllers/user');
 const indexRoute = require('./routes/index');
 
 // *************** MONGO_DB ****************** //
 
+const URI = 'mongodb://localhost:27017/news-explorer-db';
 const options = {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -24,7 +28,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-mongoose.connect(keys.URI, options)
+mongoose.connect(URI, options)
   .then(() => console.log('MongoDB - connected'))
   .catch((err) => console.log('MongoDB does not connected. ERR: ', err));
 
@@ -66,6 +70,6 @@ app.use((err, req, res, next) => {
 
 // *************** APP ****************** //
 
-app.listen(keys.PORT, () => {
-  console.log('Local server launch on port', keys.PORT);
+app.listen(PORT, () => {
+  console.log('Local server launch on port', PORT);
 });
