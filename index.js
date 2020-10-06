@@ -1,6 +1,6 @@
 const express = require('express');
 const coockieParser = require('cookie-parser');
-require('dotenv').config();
+require('dotenv').config().load();
 
 const { PORT, URI } = process.env;
 
