@@ -44,7 +44,7 @@ app.post('/signup', userController.createUser);
 
 app.use(auth);
 
-app.use('/api', indexRoute);
+app.use('/', indexRoute);
 
 app.use(errorLogger);
 
