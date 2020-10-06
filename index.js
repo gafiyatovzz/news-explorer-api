@@ -1,8 +1,6 @@
 const express = require('express');
 const coockieParser = require('cookie-parser');
-require('dotenv').config().load();
-
-const { PORT, URI } = process.env;
+require('dotenv').config();
 
 const app = express();
 
@@ -13,7 +11,7 @@ const { errors } = require('celebrate');
 
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
+const keys = require('./config/keys');
 const userController = require('./controllers/user');
 const indexRoute = require('./routes/index');
 
@@ -26,7 +24,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-mongoose.connect(URI, options)
+mongoose.connect(keys.URI, options)
   .then(() => console.log('MongoDB - connected'))
   .catch((err) => console.log('MongoDB does not connected. ERR: ', err));
 
@@ -68,6 +66,6 @@ app.use((err, req, res, next) => {
 
 // *************** APP ****************** //
 
-app.listen(PORT, () => {
-  console.log('Local server launch on port', PORT);
+app.listen(keys.PORT, () => {
+  console.log('Local server launch on port', keys.PORT);
 });
