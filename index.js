@@ -13,14 +13,13 @@ const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 // const keys = require('./config/keys');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, URI } = process.env;
 
 const userController = require('./controllers/user');
 const indexRoute = require('./routes/index');
 
 // *************** MONGO_DB ****************** //
 
-const URI = 'mongodb://localhost:27017/news-explorer-db';
 const options = {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -56,7 +55,6 @@ app.use(errors());
 app.use((err, req, res, next) => {
   if (!err.statuseCode) {
     const { statuseCode = 500, message } = err;
-
     res.status(statuseCode)
       .send({
         message: statuseCode === 500

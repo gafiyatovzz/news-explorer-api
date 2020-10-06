@@ -19,10 +19,8 @@ module.exports.createArtiqle = (req, res, next) => {
     keyword, title, text, date, source, link, image, owner: req.user._id,
   })
     .then((article) => {
-      if (!article) {
-        throw new BadRequestError('Ошибка запроса. Данные некорректны.');
-      }
-      res.send({ data: article });
+      if (!article) throw new BadRequestError('Ошибка запроса. Данные некорректны.');
+      else res.send({ data: article });
     })
     .catch(next);
 };
