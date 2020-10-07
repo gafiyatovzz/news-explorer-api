@@ -13,7 +13,8 @@ const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 // const keys = require('./config/keys');
 
-const { PORT = 3000, URI } = process.env;
+const { PORT = 3000 } = process.env;
+const URI = 'mongodb://localhost:27017/news-explorer-db';
 
 const userController = require('./controllers/user');
 const indexRoute = require('./routes/index');
