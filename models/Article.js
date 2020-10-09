@@ -23,10 +23,6 @@ const articleSchema = new mongoose.Schema({
   source: {
     type: String,
     required: true,
-    validate: {
-      validator: (v) => regUrl.test(v),
-      message: 'Ссылка некорректна',
-    },
   },
   link: {
     type: String,

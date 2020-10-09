@@ -12,11 +12,11 @@ router.get('/', controller.getAllArticles);
 
 router.post('/', celebrate({
   body: Joi.object().keys({
-    keyword: Joi.string().required().alphanum(),
-    title: Joi.string().required().alphanum(),
-    text: Joi.string().required().alphanum(),
+    keyword: Joi.string().required(),
+    title: Joi.string().required(),
+    text: Joi.string().required(),
     date: Joi.string().required(),
-    source: Joi.string(),
+    source: Joi.string().required(),
     link: Joi.string().required().regex(regx),
     image: Joi.string().required().regex(regx),
     owner: Joi.string().required(),
