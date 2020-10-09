@@ -26,7 +26,7 @@ module.exports.createArtiqle = (req, res, next) => {
 };
 
 module.exports.removeArtiqle = (req, res, next) => {
-  Article.findById(req.params.id)
+  Article.findById(req.body._id)
     .then((art) => {
       if (art === null) {
         throw new NotFoundError('Такой новости не существует');

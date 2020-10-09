@@ -2,6 +2,8 @@ const express = require('express');
 const coockieParser = require('cookie-parser');
 require('dotenv').config();
 
+console.log(process.env.NODE_ENV);
+
 const app = express();
 
 const mongoose = require('mongoose');
@@ -11,10 +13,10 @@ const { errors } = require('celebrate');
 
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-// const keys = require('./config/keys');
+const keys = require('./config/keys');
 
-const { PORT = 3000 } = process.env;
-const URI = 'mongodb://localhost:27017/news-explorer-db';
+// const { PORT = 3000 } = process.env;
+// const URI = 'mongodb://localhost:27017/news-explorer-db';
 
 const userController = require('./controllers/user');
 const indexRoute = require('./routes/index');
@@ -28,7 +30,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-mongoose.connect(URI, options)
+mongoose.connect(keys.URI, options)
   .then(() => console.log('MongoDB - connected'))
   .catch((err) => console.log('MongoDB does not connected. ERR: ', err));
 
@@ -69,6 +71,6 @@ app.use((err, req, res, next) => {
 
 // *************** APP ****************** //
 
-app.listen(PORT, () => {
-  console.log('Local server launch on port', PORT);
+app.listen(keys.PORT, () => {
+  console.log('Local server launch on port', keys.PORT);
 });
