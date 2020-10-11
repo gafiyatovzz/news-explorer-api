@@ -40,12 +40,8 @@ module.exports.removeArtiqle = (req, res, next) => {
     })
     .catch((e) => {
       if (e) {
-        throw new NotFoundError('Новость не найдена')
+        throw new NotFoundError('Новость не найдена');
       }
     })
     .catch(next);
 };
-
-// if (!art) {
-  // throw new NotFoundError('Такой новости не существует');
-// } else 

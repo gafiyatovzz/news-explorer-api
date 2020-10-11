@@ -1,8 +1,8 @@
 # news-explorer-api
 created by Zakir Gafiyatov
 
-URL: https://gafiyatovz.students.nomoreparties.co/
-IP: http://178.154.227.104:5000/
+URL: https://api.news-gz.students.nomoreparties.co/
+IP: http://84.201.159.88:3000/
 
 ## Запуск проекта
   1. Склонировать репозиторий:
@@ -16,5 +16,5 @@ IP: http://178.154.227.104:5000/
       npm run start
     - в режиме разработки с автоматическим перезапуском сервера:
       npm run dev
-  5. Локальный сервер работает на порту 5000, после запуска api будет доступно по адресу:
-    http://localhost:5000/
+  5. Локальный сервер работает на порту 3000, после запуска api будет доступно по адресу:
+    http://localhost:3000/

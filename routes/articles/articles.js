@@ -28,6 +28,6 @@ router.delete('/articleId', celebrate({
     _id: Joi.string().required().alphanum(),
   }),
 }),
-  controller.removeArtiqle);
+controller.removeArtiqle);
 
 module.exports = router;
