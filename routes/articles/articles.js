@@ -23,12 +23,11 @@ router.post('/', celebrate({
   }),
 }), controller.createArtiqle);
 
-router.delete('/articleId', controller.removeArtiqle);
-
-// celebrate({
-//   body: Joi.object().keys({
-//     _id: Joi.string().required(),
-//   }),
-// }),
+router.delete('/articleId', celebrate({
+  body: Joi.object().keys({
+    _id: Joi.string().required().alphanum(),
+  }),
+}),
+  controller.removeArtiqle);
 
 module.exports = router;

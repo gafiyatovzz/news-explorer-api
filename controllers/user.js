@@ -62,9 +62,6 @@ module.exports.createUser = (req, res, next) => {
         password: hash,
       })
         .then((us) => {
-          if (!us) {
-            throw new BadRequestError('При создании пользователья что-то пошло не так.');
-          }
           res.status(201).send({
             data: {
               _id: us._id,

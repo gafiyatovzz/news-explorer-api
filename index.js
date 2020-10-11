@@ -11,14 +11,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 
-const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const keys = require('./config/keys');
 
 // const { PORT = 3000 } = process.env;
 // const URI = 'mongodb://localhost:27017/news-explorer-db';
 
-const userController = require('./controllers/user');
 const indexRoute = require('./routes/index');
 
 // *************** MONGO_DB ****************** //
@@ -42,18 +40,14 @@ app.use(bodyParser.json());
 app.use(requestLogger);
 
 // *************** ROUTES ****************** //
-app.post('/signin', userController.login);
-app.post('/signup', userController.createUser);
-
-app.use(auth);
 
 app.use('/', indexRoute);
+
+// *************** ERRORS ****************** //
 
 app.use(errorLogger);
 
 app.use(errors());
-
-// *************** ERRORS ****************** //
 
 app.use((err, req, res, next) => {
   if (!err.statuseCode) {
