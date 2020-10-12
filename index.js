@@ -8,15 +8,11 @@ const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
-const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000, URI = 'mongodb://localhost:27017/news-explorer-db' } = process.env;
 
-const userController = require('./controllers/user');
 const indexRoute = require('./routes/index');
-
-console.log(process.env.NODE_ENV)
 
 // *************** MONGO_DB ****************** //
 
