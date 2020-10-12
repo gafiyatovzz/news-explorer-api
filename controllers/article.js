@@ -26,7 +26,7 @@ module.exports.createArtiqle = (req, res, next) => {
 };
 
 module.exports.removeArtiqle = (req, res, next) => {
-  Article.findById(req.params._id)
+  Article.findById(req.params.id)
     .then((art) => {
       if (art.owner.toString() === req.user._id) {
         Article.findByIdAndRemove(art._id)

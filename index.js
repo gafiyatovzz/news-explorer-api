@@ -2,22 +2,21 @@ const express = require('express');
 const coockieParser = require('cookie-parser');
 require('dotenv').config();
 
-console.log(process.env.NODE_ENV);
-
 const app = express();
 
 const mongoose = require('mongoose');
 
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
-
+const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const keys = require('./config/keys');
 
-// const { PORT = 3000 } = process.env;
-// const URI = 'mongodb://localhost:27017/news-explorer-db';
+const { PORT = 3000, URI } = process.env;
 
+const userController = require('./controllers/user');
 const indexRoute = require('./routes/index');
+
+console.log(process.env.NODE_ENV)
 
 // *************** MONGO_DB ****************** //
 
@@ -28,7 +27,7 @@ const options = {
   useUnifiedTopology: true,
 };
 
-mongoose.connect(keys.URI, options)
+mongoose.connect(URI, options)
   .then(() => console.log('MongoDB - connected'))
   .catch((err) => console.log('MongoDB does not connected. ERR: ', err));
 
@@ -40,14 +39,18 @@ app.use(bodyParser.json());
 app.use(requestLogger);
 
 // *************** ROUTES ****************** //
+app.post('/signin', userController.login);
+app.post('/signup', userController.createUser);
+
+app.use(auth);
 
 app.use('/', indexRoute);
-
-// *************** ERRORS ****************** //
 
 app.use(errorLogger);
 
 app.use(errors());
+
+// *************** ERRORS ****************** //
 
 app.use((err, req, res, next) => {
   if (!err.statuseCode) {
@@ -59,12 +62,17 @@ app.use((err, req, res, next) => {
           : message,
       });
   } else {
-    res.status(err.statuseCode).send({ message: err.message });
+    res.status(err.statuseCode).send({
+      Error: {
+        message: err.message,
+        statuseCode: err.statuseCode,
+      },
+    });
   } next();
 });
 
 // *************** APP ****************** //
 
-app.listen(keys.PORT, () => {
-  console.log('Local server launch on port', keys.PORT);
+app.listen(PORT, () => {
+  console.log('Local server launch on port', PORT);
 });
