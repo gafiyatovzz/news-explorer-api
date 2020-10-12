@@ -39,10 +39,6 @@ app.use(bodyParser.json());
 app.use(requestLogger);
 
 // *************** ROUTES ****************** //
-app.post('/signin', userController.login);
-app.post('/signup', userController.createUser);
-
-app.use(auth);
 
 app.use('/', indexRoute);
 
