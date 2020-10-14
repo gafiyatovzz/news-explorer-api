@@ -7,5 +7,5 @@ module.exports = {
   ForbiddenError,
   NotFoundError,
   BadRequestError,
-  UnauthorizedError
+  UnauthorizedError,
 };
