@@ -19,7 +19,6 @@ router.post('/', celebrate({
     source: Joi.string().required(),
     link: Joi.string().required().regex(regx),
     image: Joi.string().required().regex(regx),
-    owner: Joi.string().required(),
   }),
 }), controller.createArtiqle);
 
