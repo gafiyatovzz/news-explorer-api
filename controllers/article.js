@@ -27,6 +27,11 @@ module.exports.createArtiqle = (req, res, next) => {
 
 module.exports.removeArtiqle = (req, res, next) => {
   Article.findById(req.params.id)
+    .then((isData) => {
+      if (!isData) {
+        throw new NotFoundError('Новость не найдена');
+      } return isData;
+    })
     .then((art) => {
       if (art.owner.toString() === req.user._id) {
         Article.findByIdAndRemove(art._id)
@@ -34,14 +39,12 @@ module.exports.removeArtiqle = (req, res, next) => {
             res.send({ message: 'Новость удалена!' });
           })
           .catch(next);
-      } else {
-        throw new ForbiddenError('Запрещено удалять чужие новости');
-      }
+      } return art;
     })
-    .catch((e) => {
-      if (e) {
-        throw new NotFoundError('Новость не найдена');
-      }
+    .then((data) => {
+      if (data.owner.toString() !== req.user._id) {
+        throw new ForbiddenError('Запрещено удалять чужие новости');
+      } return data;
     })
     .catch(next);
 };

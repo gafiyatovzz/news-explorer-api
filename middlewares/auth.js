@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const ForbiddenError = require('../utils/errors/ForbiddenError');
+const { UnauthorizedError } = require('../utils/errors/index');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   // прилетает ключ без Bearer, условия if(!auth || !auth.startWith('Bearer ')) не подходит
   if (!authorization) {
-    throw new ForbiddenError('Необходима авторизация');
+    throw new UnauthorizedError('Необходима авторизация');
   }
 
   const token = authorization.replace('Bearer ', '');
@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
         : 'dev-secret',
     );
   } catch (err) {
-    throw new ForbiddenError('Необходима авторизация');
+    throw new UnauthorizedError('Необходима авторизация');
   }
 
   req.user = payload;
