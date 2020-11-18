@@ -1,8 +1,8 @@
 # news-explorer-api
 created by Zakir Gafiyatov
 
-URL: https://api.news-gz.students.nomoreparties.co/
-IP: http://84.201.159.88:3000/
+URL: https://api.gz-news-explorer.students.nomoreparties.co/
+IP: http://178.154.225.63:3000/
 
 ## Запуск проекта
   1. Склонировать репозиторий:
