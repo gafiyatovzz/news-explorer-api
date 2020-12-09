@@ -40,7 +40,7 @@ module.exports.login = (req, res, next) => {
           maxAge: 360000,
           // httpOnly: false,
         });
-        res.send({success: 'token send'});
+        res.send({success: 'token send', token: token});
     })
     .catch(next);
 };
