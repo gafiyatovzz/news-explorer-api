@@ -1,16 +1,16 @@
 const express = require('express');
-const cors = require('cors');
+// const cors = require('cors');
 
 const app = express();
 
 const { Joi, celebrate } = require('celebrate');
 const userRoute = require('./user/user');
 const articleRoute = require('./articles/articles');
-
 const controllerUser = require('../controllers/user');
+const cors = require('../middlewares/cors')
 const auth = require('../middlewares/auth');
 
-app.use(cors());
+app.use(cors);
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
