@@ -37,7 +37,7 @@ app.use(requestLogger);
 app.use(cors({
   credentials: true,
   origin: '*',
-  allowedHeaders: 'Content-Type, Coockie'
+  allowedHeaders: 'Content-Type, Coockie, Authorization'
 }));
 // *************** ROUTES ****************** //
 
