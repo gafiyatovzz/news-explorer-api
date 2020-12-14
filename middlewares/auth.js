@@ -5,7 +5,9 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
-  // прилетает ключ без Bearer, условия if(!auth || !auth.startWith('Bearer ')) не подходит
+  
+  res.header('Access-Control-Allow-Origin', '*');
+
   if (!authorization) {
     throw new UnauthorizedError('Необходима авторизация');
   }
