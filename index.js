@@ -34,7 +34,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(requestLogger);
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:8080',
+  allowedHeaders: 'Content-Type, Coockie'
+}));
 // *************** ROUTES ****************** //
 
 app.use('/', indexRoute);
